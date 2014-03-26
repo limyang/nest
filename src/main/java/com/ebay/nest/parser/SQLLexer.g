@@ -1,0 +1,268 @@
+lexer grammar SQLLexer;
+
+@lexer::header {package com.ebay.nest.parser;}
+
+KW_TRUE : 'TRUE';
+KW_FALSE : 'FALSE';
+KW_ALL : 'ALL';
+KW_AND : 'AND';
+KW_OR : 'OR';
+KW_NOT : 'NOT' | '!';
+KW_LIKE : 'LIKE';
+
+KW_IF : 'IF';
+KW_EXISTS : 'EXISTS';
+
+KW_ASC : 'ASC';
+KW_DESC : 'DESC';
+KW_ORDER : 'ORDER';
+KW_GROUP : 'GROUP';
+KW_BY : 'BY';
+KW_HAVING : 'HAVING';
+KW_WHERE : 'WHERE';
+KW_FROM : 'FROM';
+KW_AS : 'AS';
+KW_SELECT : 'SELECT';
+KW_DISTINCT : 'DISTINCT';
+KW_INSERT : 'INSERT';
+KW_OVERWRITE : 'OVERWRITE';
+KW_JOIN : 'JOIN';
+KW_LEFT : 'LEFT';
+KW_RIGHT : 'RIGHT';
+KW_FULL : 'FULL';
+KW_ON : 'ON';
+KW_PARTITION : 'PARTITION';
+KW_TABLE: 'TABLE';
+KW_INDEX: 'INDEX';
+KW_USING: 'USING';
+KW_DISTRIBUTE: 'DISTRIBUTE';
+KW_SORT: 'SORT';
+KW_UNION: 'UNION';
+KW_LOAD: 'LOAD';
+KW_EXPORT: 'EXPORT';
+KW_IMPORT: 'IMPORT';
+KW_IS: 'IS';
+KW_NULL: 'NULL';
+KW_CREATE: 'CREATE';
+KW_BOOLEAN: 'BOOLEAN';
+KW_INTEGER: 'INTEGER';
+KW_FLOAT: 'FLOAT';
+KW_DOUBLE: 'DOUBLE';
+KW_DATE: 'DATE';
+KW_DATETIME: 'DATETIME';
+KW_TIME: 'TIME';
+KW_TIMESTAMP: 'TIMESTAMP';
+KW_DECIMAL: 'DECIMAL';
+KW_STRING: 'STRING';
+KW_ARRAY: 'ARRAY';
+KW_STRUCT: 'STRUCT';
+KW_MAP: 'MAP';
+KW_INTO: 'INTO';
+KW_FORMAT: 'FORMAT';
+KW_DELIMITED: 'DELIMITED';
+KW_FIELDS: 'FIELDS';
+KW_TERMINATED: 'TERMINATED';
+KW_ESCAPED: 'ESCAPED';
+KW_FILEFORMAT: 'FILEFORMAT';
+KW_INPUTFORMAT: 'INPUTFORMAT';
+KW_OUTPUTFORMAT: 'OUTPUTFORMAT';
+KW_ENABLE: 'ENABLE';
+KW_DISABLE: 'DISABLE';
+KW_READONLY: 'READONLY';
+KW_LOCATION: 'LOCATION';
+KW_OUT: 'OUT';
+KW_OF: 'OF';
+KW_PERCENT: 'PERCENT';
+KW_CAST: 'CAST';
+KW_ADD: 'ADD';
+KW_VOLATILE: 'VOLATILE';
+KW_TEMPORARY: 'TEMPORARY';
+KW_FUNCTION: 'FUNCTION';
+KW_MACRO: 'MACRO';
+KW_EXPLAIN: 'EXPLAIN';
+KW_WITH: 'WITH';
+KW_LIMIT: 'LIMIT';
+KW_SET: 'SET';
+KW_CASE: 'CASE';
+KW_WHEN: 'WHEN';
+KW_THEN: 'THEN';
+KW_ELSE: 'ELSE';
+KW_END: 'END';
+KW_MAPJOIN: 'MAPJOIN';
+KW_UTC: 'UTC';
+KW_UTCTIMESTAMP: 'UTC_TMESTAMP';
+KW_LONG: 'LONG';
+KW_DELETE: 'DELETE';
+KW_FETCH: 'FETCH';
+KW_VIEW: 'VIEW';
+KW_IN: 'IN';
+KW_DATABASE: 'DATABASE';
+KW_GRANT: 'GRANT';
+KW_REVOKE: 'REVOKE';
+KW_UNDO: 'UNDO';
+KW_LOCK: 'LOCK';
+KW_LOCKS: 'LOCKS';
+KW_UNLOCK: 'UNLOCK';
+KW_SHARED: 'SHARED';
+KW_EXCLUSIVE: 'EXCLUSIVE';
+KW_PROCEDURE: 'PROCEDURE';
+KW_UNSIGNED: 'UNSIGNED';
+KW_WHILE: 'WHILE';
+KW_READ: 'READ';
+KW_RANGE: 'RANGE';
+KW_BEFORE: 'BEFORE';
+KW_BETWEEN: 'BETWEEN';
+KW_BOTH: 'BOTH';
+KW_BINARY: 'BINARY';
+KW_CROSS: 'CROSS';
+KW_CONTINUE: 'CONTINUE';
+KW_CURSOR: 'CURSOR';
+KW_TRIGGER: 'TRIGGER';
+KW_SEMI: 'SEMI';
+KW_USE: 'USE';
+KW_OPTION: 'OPTION';
+KW_CONCATENATE: 'CONCATENATE';
+KW_UPDATE: 'UPDATE';
+KW_INNER: 'INNER';
+KW_SOURCE: 'SOURCE';
+KW_PATH: 'PATH';
+KW_META: 'META';
+KW_INVOKE: 'INVOKE';
+KW_DEFINE: 'DEFINE';
+KW_OUTER: 'OUTER';
+KW_ROWS: 'ROWS';
+KW_OVER: 'OVER';
+KW_QUALIFY: 'QUALIFY';
+KW_SMALLINT: 'SMALLINT';
+KW_BYTEINT: 'BYTEINT';
+KW_BIGINT: 'BIGINT';
+KW_INT: 'INT';
+KW_TARGET: 'TARGET';
+KW_CHAR: 'CHAR';
+KW_UPPERCASE: 'UPPERCASE';
+KW_TIME_ZONE: 'TIMEZONE';
+KW_MONTH: 'MONTH';
+KW_DAY: 'DAY';
+KW_YEAR: 'YEAR';
+KW_HOUR: 'HOUR';
+KW_MINUTE: 'MINUTE';
+KW_SECOND: 'SECOND';
+KW_INTERVAL: 'INTERVAL';
+KW_PERIOD: 'PERIOD';
+KW_DEFAULT: 'DEFAULT';
+
+
+DOT : '.';
+COLON : ':' ;
+COMMA : ',' ;
+SEMICOLON : ';' ;
+LPAREN : '(' ;
+RPAREN : ')' ;
+LSQUARE : '[' ;
+RSQUARE : ']' ;
+LCURLY : '{';
+RCURLY : '}';
+EQUAL : '=' | '==';
+EQUAL_NS : '<=>';
+NOTEQUAL : '<>' | '!=';
+LESSTHANOREQUALTO : '<=';
+LESSTHAN : '<';
+GREATERTHANOREQUALTO : '>=';
+GREATERTHAN : '>';
+DIVIDE : '/';
+PLUS : '+';
+MINUS : '-';
+STAR : '*';
+MOD : 'MOD';
+AMPERSAND : '&';
+TILDE : '~';
+BITWISEOR : '|';
+BITWISEXOR : '^';
+QUESTION : '?';
+DOLLAR : '$';
+KW_CASESPECIFIC: 'CASESPECIFIC';
+
+
+
+
+fragment
+Letter
+	: 
+	'a'..'z' | 'A'..'Z'
+	;
+
+fragment
+HexDigit
+	: 
+	'a'..'f' | 'A'..'F'
+	;
+
+fragment
+Digit
+	:
+	'0'..'9'
+	;
+
+fragment
+Exponent
+	:
+	('e' | 'E') ( PLUS|MINUS )? (Digit)+
+	;
+
+fragment
+RegexComponent
+	: 
+	'a'..'z' | 'A'..'Z' | '0'..'9' | '_'
+	| PLUS | STAR | QUESTION | MINUS | DOT
+	| LPAREN | RPAREN | LSQUARE | RSQUARE | LCURLY | RCURLY
+	| BITWISEXOR | BITWISEOR | DOLLAR
+	;
+
+StringLiteral
+	:
+	( '\'' ( ~('\''|'\\') | ('\\' .) )* '\''
+	| '\"' ( ~('\"'|'\\') | ('\\' .) )* '\"'
+	)+
+	;
+
+DecimalLiteral
+	:
+	Number 'B' 'D'
+	;
+
+ByteLengthLiteral
+	:
+	(Digit)+ ('b' | 'B' | 'k' | 'K' | 'm' | 'M' | 'g' | 'G')
+	;
+
+Number
+	:
+	(Digit)+ ( DOT (Digit)* (Exponent)? | Exponent)?
+	;
+    
+Identifier
+	:
+	(Letter | Digit) (Letter | Digit | '_')*
+	| '`' RegexComponent+ '`'
+	;
+	
+
+CharSetName
+	:
+	'_' (Letter | Digit | '_' | '-' | '.' | ':' )+
+	;
+
+WS  
+	:  
+	(' '|'\r'|'\t'|'\n') {$channel=HIDDEN;}
+	;
+
+SL_COMMENT
+  	: 
+  	('--'|'#') (~('\n'|'\r'))* { $channel=HIDDEN; }
+	;
+ML_COMMENT	
+	: 
+	'/*' ( options {greedy=false;} : . )* '*/' {$channel=HIDDEN;}
+	;
+

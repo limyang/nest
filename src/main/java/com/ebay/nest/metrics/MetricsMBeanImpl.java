@@ -1,0 +1,149 @@
+package com.ebay.nest.metrics;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.management.Attribute;
+import javax.management.AttributeList;
+import javax.management.AttributeNotFoundException;
+import javax.management.InvalidAttributeValueException;
+import javax.management.MBeanAttributeInfo;
+import javax.management.MBeanConstructorInfo;
+import javax.management.MBeanException;
+import javax.management.MBeanInfo;
+import javax.management.MBeanNotificationInfo;
+import javax.management.MBeanOperationInfo;
+import javax.management.ReflectionException;
+
+public class MetricsMBeanImpl implements MetricsMBean {
+
+	private final Map<String, Object> metricsMap = new HashMap<String, Object>();
+
+	private MBeanAttributeInfo[] attributeInfos;
+	private boolean dirtyAttributeInfoCache = true;
+
+	private static final MBeanConstructorInfo[] ctors = null;
+	private static final MBeanOperationInfo[] ops = { new MBeanOperationInfo("reset",
+			"Sets the values of all Attributes to 0", null, "void", MBeanOperationInfo.ACTION) };
+	private static final MBeanNotificationInfo[] notifs = null;
+
+	public Object getAttribute(String arg0) throws AttributeNotFoundException, MBeanException, ReflectionException {
+		synchronized (metricsMap) {
+			if (metricsMap.containsKey(arg0)) {
+				return metricsMap.get(arg0);
+			} else {
+				throw new AttributeNotFoundException("Key [" + arg0 + "] not found/tracked");
+			}
+		}
+	}
+
+	@Override
+	public AttributeList getAttributes(String[] arg0) {
+		AttributeList results = new AttributeList();
+		synchronized (metricsMap) {
+			for (String key : arg0) {
+				results.add(new Attribute(key, metricsMap.get(key)));
+			}
+		}
+		return results;
+	}
+
+	@Override
+	public MBeanInfo getMBeanInfo() {
+		if (dirtyAttributeInfoCache) {
+			synchronized (metricsMap) {
+				attributeInfos = new MBeanAttributeInfo[metricsMap.size()];
+				int i = 0;
+				for (String key : metricsMap.keySet()) {
+					attributeInfos[i] = new MBeanAttributeInfo(key, metricsMap.get(key).getClass().getName(), key,
+							true, true/* writable */, false);
+					i++;
+				}
+				dirtyAttributeInfoCache = false;
+			}
+		}
+		return new MBeanInfo(this.getClass().getName(), "metrics information", attributeInfos, ctors, ops, notifs);
+	}
+
+	@Override
+	public Object invoke(String name, Object[] args, String[] signature) throws MBeanException, ReflectionException {
+		if (name.equals("reset")) {
+			reset();
+			return null;
+		}
+		throw new ReflectionException(new NoSuchMethodException(name));
+	}
+
+	@Override
+	public void setAttribute(Attribute attr) throws AttributeNotFoundException, InvalidAttributeValueException,
+			MBeanException, ReflectionException {
+		try {
+			put(attr.getName(), attr.getValue());
+		} catch (Exception e) {
+			throw new MBeanException(e);
+		}
+	}
+
+	@Override
+	public AttributeList setAttributes(AttributeList arg0) {
+		AttributeList attributesSet = new AttributeList();
+		for (Attribute attr : arg0.asList()) {
+			try {
+				setAttribute(attr);
+				attributesSet.add(attr);
+			} catch (AttributeNotFoundException e) {
+
+			} catch (InvalidAttributeValueException e) {
+
+			} catch (MBeanException e) {
+
+			} catch (ReflectionException e) {
+
+			}
+		}
+		return attributesSet;
+	}
+
+	public boolean hasKey(String name) {
+		synchronized (metricsMap) {
+			return metricsMap.containsKey(name);
+		}
+	}
+
+	public void put(String name, Object value) {
+		synchronized (metricsMap) {
+			if (!metricsMap.containsKey(name)) {
+				dirtyAttributeInfoCache = true;
+			}
+			metricsMap.put(name, value);
+		}
+	}
+
+	public Object get(String name) {
+		try {
+			return getAttribute(name);
+		} catch (AttributeNotFoundException e) {
+			return null;
+		} catch (MBeanException e) {
+			return null;
+		} catch (ReflectionException e) {
+			return null;
+		}
+	}
+
+	public void reset() {
+		synchronized (metricsMap) {
+			for (String key : metricsMap.keySet()) {
+				metricsMap.put(key, Long.valueOf(0));
+			}
+		}
+	}
+
+	public void clear() {
+		synchronized (metricsMap) {
+			attributeInfos = null;
+			dirtyAttributeInfoCache = true;
+			metricsMap.clear();
+		}
+	}
+}
